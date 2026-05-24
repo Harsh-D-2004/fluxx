@@ -1,0 +1,412 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Fluxx API",
+    "description": "Feature flag management API — Projects, Feature Flags, Strategies, SSE PubSub",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "projectId",
+      "value": "replace-with-project-id",
+      "type": "string"
+    },
+    {
+      "key": "flagId",
+      "value": "replace-with-flag-id",
+      "type": "string"
+    },
+    {
+      "key": "strategyId",
+      "value": "replace-with-strategy-id",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Feature Flag Project\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get All Projects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects"]
+            }
+          }
+        },
+        {
+          "name": "Get Project by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}?name=Updated Project Name",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}"],
+              "query": [
+                { "key": "name", "value": "Updated Project Name" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feature Flags",
+      "item": [
+        {
+          "name": "Create Flag",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/feature-flags",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feature-flags"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"name\": \"dark-mode\",\n  \"flag_type\": \"KILL_SWITCH\",\n  \"enabled\": false\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "flag_type: KILL_SWITCH | ROLLOUT | TARGETED"
+          }
+        },
+        {
+          "name": "Create Flag (Rollout)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/feature-flags",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feature-flags"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"name\": \"new-checkout\",\n  \"flag_type\": \"ROLLOUT\",\n  \"enabled\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get All Flags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/feature-flags",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feature-flags"]
+            }
+          }
+        },
+        {
+          "name": "Get Flags by Project",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/feature-flags/project/{{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feature-flags", "project", "{{projectId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Flag by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/feature-flags/{{flagId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feature-flags", "{{flagId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Flag (enable)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/feature-flags/{{flagId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feature-flags", "{{flagId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Flag (disable)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/feature-flags/{{flagId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feature-flags", "{{flagId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": false\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Flag",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/feature-flags/{{flagId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feature-flags", "{{flagId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Strategies",
+      "item": [
+        {
+          "name": "Create Strategy (DEFAULT)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/strategies",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "strategies"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flagId\": \"{{flagId}}\",\n  \"strategyType\": \"DEFAULT\",\n  \"params\": []\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "strategyType: DEFAULT | ROLLOUT | USER_ID"
+          }
+        },
+        {
+          "name": "Create Strategy (ROLLOUT)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/strategies",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "strategies"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flagId\": \"{{flagId}}\",\n  \"strategyType\": \"ROLLOUT\",\n  \"params\": [\n    {\n      \"paramKey\": \"percentage\",\n      \"paramValue\": \"25\"\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Create Strategy (USER_ID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/strategies",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "strategies"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flagId\": \"{{flagId}}\",\n  \"strategyType\": \"USER_ID\",\n  \"params\": [\n    {\n      \"paramKey\": \"userIds\",\n      \"paramValue\": \"user-123,user-456\"\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get All Strategies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/strategies",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "strategies"]
+            }
+          }
+        },
+        {
+          "name": "Get Strategy by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/strategies/{{strategyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "strategies", "{{strategyId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Strategy by Flag",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/strategies/flag/{{flagId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "strategies", "flag", "{{flagId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Strategies by Type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/strategies/type/ROLLOUT",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "strategies", "type", "ROLLOUT"],
+              "description": "strategyType path param: DEFAULT | ROLLOUT | USER_ID"
+            }
+          }
+        },
+        {
+          "name": "Update Strategy",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/strategies/{{strategyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "strategies", "{{strategyId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flagId\": \"{{flagId}}\",\n  \"strategyType\": \"ROLLOUT\",\n  \"params\": [\n    {\n      \"paramKey\": \"percentage\",\n      \"paramValue\": \"50\"\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Strategy",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/strategies/{{strategyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "strategies", "{{strategyId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PubSub / SSE",
+      "item": [
+        {
+          "name": "Subscribe to Flag Events (SSE)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{projectId}}",
+                "description": "Project ID — only events for this project are streamed"
+              },
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              },
+              {
+                "key": "Cache-Control",
+                "value": "no-cache"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pubsub/subscribe",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pubsub", "subscribe"]
+            },
+            "description": "Opens a persistent SSE connection. The server pushes 'flag-event' events whenever a flag or strategy changes for the given project.\n\nEvent shape:\n{\n  \"projectId\": \"...\",\n  \"flagId\": \"...\",\n  \"eventType\": \"FLAG_CREATED | FLAG_ENABLED | FLAG_DISABLED | FLAG_ARCHIVED | STRATEGY_ADDED | STRATEGY_UPDATED | STRATEGY_REMOVED\",\n  \"afterState\": \"{ ...serialized flag or strategy }\",\n  \"createdAt\": \"2026-05-15T10:00:00\"\n}\n\nNote: Postman does not render SSE streams natively. Use curl or a browser EventSource for live testing:\n  curl -N -H 'Authorization: <projectId>' http://localhost:8080/api/pubsub/subscribe"
+          }
+        }
+      ]
+    }
+  ]
+}
